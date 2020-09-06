@@ -18,7 +18,6 @@ public class RampsRotator : MonoBehaviour, IDragHandler
     public void OnDrag(PointerEventData eventData)
     {
         RotateLevel(eventData.delta);
-        ballRigidbody?.AddForceToBall();
     }
 
     private void RotateLevel(Vector2 delta)
