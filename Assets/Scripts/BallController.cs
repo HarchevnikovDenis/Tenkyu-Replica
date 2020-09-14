@@ -5,7 +5,6 @@ using UnityEngine;
 public class BallController : MonoBehaviour
 {
     [SerializeField] private Transform ballLandingPoint;
-    [SerializeField] private float force;
     private new Rigidbody rigidbody;
 
     private void Awake()
@@ -16,23 +15,19 @@ public class BallController : MonoBehaviour
     public void MoveToLandingPoint()
     {
         // Перемещение мячика к точке призмеления
-        Vector3 velocity = rigidbody.velocity;
-        rigidbody.isKinematic = true;
-        StartCoroutine(MoveToPoint(velocity));
+        StartCoroutine(MoveToPoint(rigidbody.velocity));
     }
 
     private IEnumerator MoveToPoint(Vector3 velocity)
     {
         float speed = velocity.magnitude;
-        while (Vector3.Distance(transform.position, ballLandingPoint.position) >= 0.25f)
+        while (transform.position.y >= ballLandingPoint.position.y)
         {
             // Двигаем мячик к точке приземления
-            transform.position = Vector3.MoveTowards(transform.position, ballLandingPoint.position, speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, ballLandingPoint.position, speed * 0.25f * Time.deltaTime);
             yield return null;
         }
 
-        rigidbody.isKinematic = false;
-        rigidbody.velocity = velocity;
         StopCoroutine("MoveToPoint");
     }
 }
